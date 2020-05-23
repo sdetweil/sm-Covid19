@@ -34,3 +34,14 @@
 .chart {
 	margin-bottom: 3vh;
 }
+.chart_title {
+	color:white;
+	font-weight: bold;
+	text-align:center; 	
+}
+.chart_attribution {
+	font-size:9px; 
+	height:11px; 
+	text-align:center; 
+	vertical-align:text-top;
+}

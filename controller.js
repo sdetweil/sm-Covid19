@@ -32,7 +32,7 @@ angular.module('SmartMirror')
 			}
 	},500)
 
-	SpeechService.addRawCommand("show charts", ()=>{ console.log("chnaging to charts"); Focus.change("charts")}, "show the COVid19 charts on chart focus" , "show charts") 
+	SpeechService.addRawCommand("show chart", ()=>{ console.log("changing to Covid19 charts"); Focus.change("charts")}, "show the COVid19 charts on chart focus" , "show chart") 
 
 	__chartcontrollerFunctions.drawChart= (canvas, chart)=>	{
 
@@ -100,14 +100,15 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
       setTimerForNextRefresh({id:canvas.id, canvas:canvas,  config:chart,  ticklabel:{}, x:{}}, 1, 'seconds')
 	}
 
-		function refreshData(profile){    
+		function refreshData(payload){    
+			console.log(payload.id+" timer popped "+ moment().format())
     if(_chart_debug)
-      console.log("refreshing")
-			_MyChartService.getData(true, profile.config).then(
+      console.log(payload.id+" refreshing "+ moment().format())
+			_MyChartService.getData(true, payload.config).then(
 				(data)=>{ 
-					console.log("received data ="+JSON.stringify(data))					
-					profile.data=data.data
-					drawonCanvas(profile.canvas, profile)
+					console.log(payload.id+" received data ="+JSON.stringify(data))					
+					payload.data=data.data
+					drawonCanvas(payload.canvas, payload)
 				})
   	}
 
@@ -148,9 +149,11 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
           }  
         }
         createTickLabels(payload)
-        var info = {  ourID:canvas.id ,canvas:canvas,  data:__$ds, config: payload.config, ticklabel:payload.ticklabel }
+        payload.data=__$ds
 
-        dodraw(info)
+  //      var info = {  ourID:canvas.id ,canvas:canvas,  data:__$ds, config: payload.config, ticklabel:payload.ticklabel }
+
+        dodraw(payload)
 		}	
 		function createTickLabels(payload){
 			  var countries=Object.keys(payload.data);
@@ -189,16 +192,16 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
        // }
 			 if(lastMoment.format('MM/DD/YYYY') !== currentMoment_date ){
           if(_chart_debug)
-            Log.log("have data last entry does NOT match today "+currentMoment_date+" id="+payload.id)          
-         	  setTimerForNextRefresh(self, retryDelay, 'minutes');
+            console.log("have data last entry does NOT match today "+currentMoment_date+" id="+payload.id)          
+         	  setTimerForNextRefresh(payload, retryDelay, 'minutes');
         }
         else{
           if(_chart_debug)
             console.log("have data last entry  DOES match today "+currentMoment_date+" id="+payload.id)           
-            setTimerForNextRefresh(self, newFileAvailableTimeofDay[payload.config.type], 'hours');
+            setTimerForNextRefresh(payload, newFileAvailableTimeofDay[payload.config.type], 'hours');
         }       
 		}
-		function dodraw(info){
+		function dodraw(payload){
 			 var chartOptions= {
 							layout: {
 							    padding: {
@@ -211,8 +214,8 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
 
               title:{
                 display: false, 
-                text: info.config.chart_title,   
-
+                text: payload.config.chart_title,   
+                fontColor:'white'
               },        
               legend: {
               //  display: true,
@@ -242,7 +245,7 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
                     distribution: 'linear',
                     scaleLabel: {
                       display: true,
-                      labelString: info.config.xAxesLabel,
+                      labelString: payload.config.xAxesLabel,
 
                     }, 
                     gridLines: {
@@ -260,6 +263,7 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
                       source: 'labels',
                       maxTicksLimit: (ticklabel.length*2)+4, //10, 
                       autoSkip: true,   
+                      fontColor: 'white'
                     },
                   }
                 ],
@@ -268,7 +272,7 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
                     display: true,
                     scaleLabel: {
                       display: true,
-                      labelString: info.config.yAxesLabel,
+                      labelString: payload.config.yAxesLabel,
 
                     },
                     gridLines: {
@@ -277,7 +281,8 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
 
                     ticks: {
                       beginAtZero: true,
-                      source: 'data'
+                      source: 'data',
+                      fontColor: "white"
                       //,
                      // min: self.config.ranges.min,
                      // suggestedMax: self.config.ranges.max,
@@ -289,19 +294,21 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
             }
         //updateOptions(self.config, chartOptions)
                 // create it now
+			if(_chart_debug)                
+				console.log(payload.id+" about to draw chart "+moment().format())                
     	try {
-    		if(charts[info.ourID]==undefined)
-    			charts[info.ourID]=[]
-        charts[info.ourID].push(new Chart(info.canvas, {
+    		if(charts[payload.id]==undefined)
+    			charts[payload.id]=[]
+        charts[payload.id].push(new Chart(payload.canvas, {
             type: 'line',
             showLine: true,
             data: {
-              datasets:  info.data[info.ourID][info.config.type],
-              labels: info.ticklabel[info.ourID],
+              datasets:  payload.data[payload.id][payload.config.type],
+              labels: payload.ticklabel[payload.id],
             },
             options: chartOptions, 
-          }
-        )
+          	}
+        	)
         )
       }
       catch(error){
@@ -309,9 +316,9 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
       }
       	
         if(_chart_debug)
-          console.log("done defered drawing  getDom() id="+info.ourID)
+          console.log("done defered drawing  getDom() id="+payload.id)
         
-//      info.config.attribution="courtesy "+attribution_label[info.config.type];
+//      payload.config.attribution="courtesy "+attribution_label[payload.config.type];
 
 		}
 		function updateOptions(config, chartOptions){
@@ -324,19 +331,19 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
         }    
 
     if(config.defaultColor){
-      defaultFontInfo.global['defaultColor']=config.defaultColor
+      defaultFontpayload.global['defaultColor']=config.defaultColor
       defaults=true
     }
     if(config.defaultFontColor){
-      defaultFontInfo.global['defaultFontColor']=config.defaultFontColor
+      defaultFontpayload.global['defaultFontColor']=config.defaultFontColor
       defaults=true
     }    
     if(config.defaultFontName){
-      defaultFontInfo.global['defaultFontFamily']=config.defaultFontName
+      defaultFontpayload.global['defaultFontFamily']=config.defaultFontName
       defaults=true
     }   
     if(config.defaultFontSize){
-      defaultFontInfo.global['defaultFontSize']=config.defaultFontSize
+      defaultFontpayload.global['defaultFontSize']=config.defaultFontSize
       defaults=true
     }   
     if(defaults)    {
@@ -423,16 +430,16 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
    // if(self.config.debug)
     let millis=next_time.diff(moment())
     if(_chart_debug)
-      console.log("timeout diff ="+ millis)
+      console.log(payload.id+" timeout diff ="+ millis)
     if(timeout_handle[payload.id]){
       if(_chart_debug)    
-        console.log("clearing timer")
+        console.log(payload.id+" clearing timer")
       clearTimeout(timeout_handle[payload.id])
     }
     if(_chart_debug)
-      console.log("starting timer")
+      console.log(payload.id+" starting timer")
     timeout_handle[payload.id]=setTimeout(()=>{refreshData(payload)},millis ); // next_time.diff(moment()));
     if(_chart_debug)
-      console.log("timer started")
+      console.log(payload.id+" timer started")
   }  
 })

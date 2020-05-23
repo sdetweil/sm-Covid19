@@ -1,13 +1,13 @@
 <div ng-controller="MyCovid19"  ng-show="focus == 'charts'"> 
 	  <div ng-repeat="chartblock in MyCovid19.config" class="{{chartblock.position}}">
-	  	<h4>charts for <span ng-bind="chartblock.position"></span><span></h4>
+	  	<!-- <h4>charts for <span ng-bind="chartblock.position"></span><span></h4> -->
         <div class="chart" ng-repeat="item in chartblock.charts" style="width:{{item.chartwidth}}px;height:{{item.chartheight}}px"  >
-        	<span ng-bind="item.chartname"></span>            
+        	<span ng-bind="item.chartname" class="chart_title" ></span>            
             <canvas id="{{chartblock.position}}{{$index}}" width="{{item.chartwidth}}" height="{{item.chartheight}}"></canvas> 
-            <div style="font-size:9px; height:11px; text-align:center; vertical-align:text-top;">
+            <div class="chart_attribution">
             	<span>courtesy of </span>
             	<span ng-bind="MyCovid19.attributions['{{item.countries}}' == ''?'states':'countries']"></span>              
         	</div>
         </div>
-      </divul>
+      </div>
 </div>
