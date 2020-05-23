@@ -1,0 +1,157 @@
+{
+  "schema": {
+    "mycovid19": {
+      "type": "array",
+      "title": "chartlist",      
+      "minItems":3,
+      "maxItems": 3, 
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "string",
+            "title": "position",
+            "enum":["left","center","right"]
+          },
+          "charts": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "title": "chart",
+                "properties": {
+                "countries":{
+                  "type":"string"           
+                },
+                "states":{
+                  "type":"string"           
+                },
+                "colorsforsource":
+                {
+                    "type":"string"
+                },
+                "charttype":{
+                  "type":"string",
+                  "enum":["cases", "cumulative cases","deaths","cumulative deaths"]                  
+                },
+                "chartname": {
+                  "type": "string",
+                  "required":true   
+                 },
+                 "xAxesLabel":{
+                  "type":"string",
+                  "required":false
+                 },
+                 "yAxesLabel":{
+                  "type":"string",
+                  "required":false
+                 },                       
+                 "chartwidth":{
+                  "type":"number",
+                  "required":false
+                 },
+                 "chartheight":{
+                  "type":"number",
+                  "required":false
+                 },
+                 "startDate":{                  
+                  "type":"date",
+                  "required":false
+                 }
+             }
+            }
+          }
+        }
+      }
+    }
+  },
+  "form": [
+    {
+      "title":"MyCovid19 chart configurator",
+      "type":"fieldset",      
+      "_comment":"put this content at the bottom of list of config controls",
+      "expandable":true,        
+      "order":100,
+      "items": [
+        {         
+      "type": "tabarray",
+      "key": "mycovid19",
+      "title": "My Covid19 Chart List",      
+      "expandable":true,
+      "items": {
+        "type": "section",
+        "legend":"{{value}}",          
+        "items": [
+          {
+            "key":"mycovid19[].position",
+            "valueInLegend":true
+          },
+          {
+            "type": "tabarray",
+            "title":"Charts",             
+            "items": [
+                 {
+                    "type":"section",         
+                    "legend":"{{value}}",              
+                    "items":[
+                    {
+                      "key":"mycovid19[].charts[].chartname",
+                      "title":"chart name",
+                      "valueInLegend":true
+                    } ,     
+                    {
+                      "key":"mycovid19[].charts[].charttype",
+                      "title":"chart type"
+                    },                 
+                      {
+                         "type": "selectfieldset",
+                              "title": "Select by Countries or US States",
+                              "expandable":true,
+                              "items": [
+                                {
+                                  "key": "mycovid19[].charts[].countries",    
+                                  "title":"country list",
+                                  "legend": "Countries"
+                                },
+                                {
+                                  "key": "mycovid19[].charts[].states",
+                                  "title":"state list",
+                                  "legend": "States"
+                                }
+                              ]     
+                        },
+                      {
+                      "title":"colors for source item",              
+                      "key":"mycovid19[].charts[].colorsforsource"
+                      },            
+                      {
+                      "key":"mycovid19[].charts[].xAxesLabel",
+                      "title":"xAxes Label"
+                      },
+                      {
+                      "key":"mycovid19[].charts[].yAxesLabel",
+                      "title":"yAxes Label"
+                      },
+                      {
+                      "key":"mycovid19[].charts[].chartwidth",
+                      "title":"width"
+                      },
+                      {                                   
+                      "key":"mycovid19[].charts[].chartheight",
+                      "title":"Height"
+                      },
+                      {
+                      "key":"mycovid19[].charts[].startDate",
+                      "title":"Start Date"
+                      }                         
+                    ]
+                 }                    
+            ]
+          }
+        ]
+      }
+  }
+  ]
+    }
+  ]
+}

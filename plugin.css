@@ -1,0 +1,36 @@
+.left {
+	display: inline-flex;
+	flex-direction: column;
+	position: absolute;
+	left:0;
+	top:5vh;
+	margin-left:.05vw;
+	width:33vw;
+	text-align:center;
+	align-items: center;
+}
+
+.center {
+	display: inline-flex;
+	flex-direction: column;	
+	position: absolute;
+	left:33vw;
+	top:5vh;	
+	width:33vw;
+	text-align:center;
+	align-items: center;	
+}
+
+.right {
+	display: inline-flex;
+	flex-direction: column;	
+	position: absolute;
+	left:66vw;
+	top:5vh;	
+	width:33vw;
+	text-align:center;
+	align-items: center;	
+}
+.chart {
+	margin-bottom: 3vh;
+}
