@@ -192,12 +192,14 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
        // }
 			 if(lastMoment.format('MM/DD/YYYY') !== currentMoment_date ){
           if(_chart_debug)
-            console.log("have data last entry does NOT match today "+currentMoment_date+" id="+payload.id)          
+            console.log("have data last entry does NOT match today "+currentMoment_date+" id="+payload.id)   
+            usePreviousFile=false;     
          	  setTimerForNextRefresh(payload, retryDelay, 'minutes');
         }
         else{
           if(_chart_debug)
-            console.log("have data last entry  DOES match today "+currentMoment_date+" id="+payload.id)           
+            console.log("have data last entry  DOES match today "+currentMoment_date+" id="+payload.id) 
+            usePreviousFile=true;          
             setTimerForNextRefresh(payload, newFileAvailableTimeofDay[payload.config.type], 'hours');
         }       
 		}
@@ -215,7 +217,7 @@ console.log("start found canvas for chart="+ chart.chartname+" id="+canvas.id)
               title:{
                 display: false, 
                 text: payload.config.chart_title,   
-                fontColor:'white'
+                fontColor:'white'               
               },        
               legend: {
               //  display: true,
