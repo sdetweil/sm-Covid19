@@ -12,16 +12,27 @@ angular.module("SmartMirror").factory("_MyChartService", function ($http) {
 
   console.log("MyCovid19 service up and running");
   var waiting = { countries: [], states: [] };
-  var location_field= {countries:3, states:1}
+  var location_field = { countries: 3, states: 1 };
   const statesurl =
     "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv";
   const countriesurl =
     "https://opendata.ecdc.europa.eu/covid19/casedistribution/csv";
-  const countryfields = {"date_fieldname":"dateRep", "cases_fieldname":"cases", "deaths_fieldname":"deaths", "location_fieldname":"countriesAndTerritories", "geo_fieldname":"geoid"};
-  const statefields = {"date_fieldname":"date", "location_fieldname":"state", "cases_fieldname":"cases", "deaths_fieldname":"deaths"};
-  const date_mask = { countries:"DD/MM/YYYY", states:"YYYY-MM-DD"}
-  const charter_date_format="MM/DD/YYYY"
-  const config_date_format="YYYY-MM-DD"
+  const countryfields = {
+    date_fieldname: "dateRep",
+    cases_fieldname: "cases",
+    deaths_fieldname: "deaths",
+    location_fieldname: "countriesAndTerritories",
+    geo_fieldname: "geoid",
+  };
+  const statefields = {
+    date_fieldname: "date",
+    location_fieldname: "state",
+    cases_fieldname: "cases",
+    deaths_fieldname: "deaths",
+  };
+  const date_mask = { countries: "DD/MM/YYYY", states: "YYYY-MM-DD" };
+  const charter_date_format = "MM/DD/YYYY";
+  const config_date_format = "YYYY-MM-DD";
   function geturl() {
     return countriesurl;
   }
@@ -173,17 +184,17 @@ angular.module("SmartMirror").factory("_MyChartService", function ($http) {
 
     return result;
   }
-  function checkDate(date,payload){
-    if(payload.config.type=='countries')
-      return date.endsWith('20')
-    else return date.startsWith("20")
+  function checkDate(date, payload) {
+    if (payload.config.type == "countries") return date.endsWith("20");
+    else return date.startsWith("20");
   }
   function doGetcountries(init, payload, data) {
     return new Promise((resolve, reject) => {
       if (init == true) {
         // format data keyed by country name
-        var location={}
-        var fields = payload.config.type == "countries"? countryfields: statefields 
+        var location = {};
+        var fields =
+          payload.config.type == "countries" ? countryfields : statefields;
 
         // loop thru the data and make based on location vs date
         for (var entry of data) {
@@ -199,104 +210,109 @@ angular.module("SmartMirror").factory("_MyChartService", function ($http) {
 
         var results = {};
         //if (true || payload.countries != undefined) {
-          // loop thru all the configured countries
-          for (var c of payload[payload.config.type]) {
-            if (location[c] !==undefined) {
-              var totalc = 0;
-              var totald = 0;
-              var cases = [];
-              var deaths = [];
-              var tcases = [];
-              var tdeaths = [];
+        // loop thru all the configured countries
+        for (var c of payload[payload.config.type]) {
+          if (location[c] !== undefined) {
+            var totalc = 0;
+            var totald = 0;
+            var cases = [];
+            var deaths = [];
+            var tcases = [];
+            var tdeaths = [];
 
-              // loop thru the data for that location
-              for (var u of location[c]) {
-                if (payload.config.debug1)
-                  console.log(
-                    "date=" +
-                      u[fields.date_fieldname] +
-                      " cases=" +
-                      u[fields[fields.cases_fieldname]] +
-                      " deaths=" +
-                      u[fields[fields.deaths_fieldname]] +
-                      " geoid=" +
-                      u[fields[fields.geo_fieldname]]
-                  );
-                // filter out before startDate
-                if (
-                  payload.startDate == undefined ||
-                  !moment(u[fields.date_fieldname], date_mask[payload.config.type]).isBefore(
-                    moment(payload.startDate, config_date_format)
-                  )
-                ) {
-                  if (checkDate(u[fields.date_fieldname], payload)) {
-                    if(payload.config.type=='countries'){
-                      cases.push({
-                        x: moment(u[fields.date_fieldname], date_mask[payload.config.type]).format(
-                          charter_date_format
-                        ),
-                        y: parseInt(u[fields.cases_fieldname]),
-                      });
-                      deaths.push({
-                        x: moment(u[fields.date_fieldname], date_mask[payload.config.type]).format(
-                          charter_date_format
-                        ),
-                        y: parseInt(u[fields.deaths_fieldname]),
-                      });
-                    } else {
-                      tcases.push({
-                        x: moment(u[fields.date_fieldname], date_mask[payload.config.type]).format(
-                          charter_date_format
-                        ),
-                        y: parseInt(u[fields.cases_fieldname]),
-                      });
-                      tdeaths.push({
-                        x: moment(u[fields.date_fieldname], date_mask[payload.config.type]).format(
-                          charter_date_format
-                        ),
-                        y: parseInt(u[fields.deaths_fieldname]),
-                      });                      
-                    }
+            // loop thru the data for that location
+            for (var u of location[c]) {
+              if (payload.config.debug1)
+                console.log(
+                  "date=" +
+                    u[fields.date_fieldname] +
+                    " cases=" +
+                    u[fields[fields.cases_fieldname]] +
+                    " deaths=" +
+                    u[fields[fields.deaths_fieldname]] +
+                    " geoid=" +
+                    u[fields[fields.geo_fieldname]]
+                );
+              // filter out before startDate
+              if (
+                payload.startDate == undefined ||
+                !moment(
+                  u[fields.date_fieldname],
+                  date_mask[payload.config.type]
+                ).isBefore(moment(payload.startDate, config_date_format))
+              ) {
+                if (checkDate(u[fields.date_fieldname], payload)) {
+                  if (payload.config.type == "countries") {
+                    cases.push({
+                      x: moment(
+                        u[fields.date_fieldname],
+                        date_mask[payload.config.type]
+                      ).format(charter_date_format),
+                      y: parseInt(u[fields.cases_fieldname]),
+                    });
+                    deaths.push({
+                      x: moment(
+                        u[fields.date_fieldname],
+                        date_mask[payload.config.type]
+                      ).format(charter_date_format),
+                      y: parseInt(u[fields.deaths_fieldname]),
+                    });
+                  } else {
+                    tcases.push({
+                      x: moment(
+                        u[fields.date_fieldname],
+                        date_mask[payload.config.type]
+                      ).format(charter_date_format),
+                      y: parseInt(u[fields.cases_fieldname]),
+                    });
+                    tdeaths.push({
+                      x: moment(
+                        u[fields.date_fieldname],
+                        date_mask[payload.config.type]
+                      ).format(charter_date_format),
+                      y: parseInt(u[fields.deaths_fieldname]),
+                    });
                   }
                 }
               }
-              if(payload.config.type=='countries'){
-                // data presented in reverse date order, flip them
-                cases = cases.reverse();
-                deaths = deaths.reverse();
-                // initialize cumulative counters to 0
-                // make a copy
-                tcases = JSON.parse(JSON.stringify(cases));
-                tdeaths = JSON.parse(JSON.stringify(deaths));   
-                // country sends daily, calculate cumulative
-                for (var i = 1; i < cases.length; i++) {
-                  tcases[i].y += tcases[i - 1].y;
-                  tdeaths[i].y += tdeaths[i - 1].y;
-                }
-              } else{              
-                // make a copy
-                cases = JSON.parse(JSON.stringify(tcases));
-                deaths = JSON.parse(JSON.stringify(tdeaths));
-                // loop thru data and create cumulative counters
-                for (var i = cases.length - 1; i > 0; i--) {
-                  cases[i].y -= tcases[i - 1].y;
-                  deaths[i].y -= tdeaths[i - 1].y;
-                }
-              }
-
-              var d = {
-                cases: cases,
-                deaths: deaths,
-                "cumulative cases": tcases,
-                "cumulative deaths": tdeaths
-              };
-              //if(payload.config.debug)
-              //  console.log("data returned ="+JSON.stringify(d))
-              // add this country to the results
-              results[c] = d;
             }
+            if (payload.config.type == "countries") {
+              // data presented in reverse date order, flip them
+              cases = cases.reverse();
+              deaths = deaths.reverse();
+              // initialize cumulative counters to 0
+              // make a copy
+              tcases = JSON.parse(JSON.stringify(cases));
+              tdeaths = JSON.parse(JSON.stringify(deaths));
+              // country sends daily, calculate cumulative
+              for (var i = 1; i < cases.length; i++) {
+                tcases[i].y += tcases[i - 1].y;
+                tdeaths[i].y += tdeaths[i - 1].y;
+              }
+            } else {
+              // make a copy
+              cases = JSON.parse(JSON.stringify(tcases));
+              deaths = JSON.parse(JSON.stringify(tdeaths));
+              // loop thru data and create cumulative counters
+              for (var i = cases.length - 1; i > 0; i--) {
+                cases[i].y -= tcases[i - 1].y;
+                deaths[i].y -= tdeaths[i - 1].y;
+              }
+            }
+
+            var d = {
+              cases: cases,
+              deaths: deaths,
+              "cumulative cases": tcases,
+              "cumulative deaths": tdeaths,
+            };
+            //if(payload.config.debug)
+            //  console.log("data returned ="+JSON.stringify(d))
+            // add this country to the results
+            results[c] = d;
           }
-      /* } 
+        }
+        /* } 
           else {
           // loop thru all the configured states
           for (var c of payload[payload.config.type]) {
