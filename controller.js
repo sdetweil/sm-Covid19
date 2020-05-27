@@ -238,7 +238,6 @@ angular
               " id=" +
               payload.id
           );
-        usePreviousFile = false;
         setTimerForNextRefresh(payload, retryDelay, "minutes");
       } else {
         if (_chart_debug)
@@ -248,7 +247,6 @@ angular
               " id=" +
               payload.id
           );
-        usePreviousFile = true;
         setTimerForNextRefresh(
           payload,
           newFileAvailableTimeofDay[payload.config.type],
@@ -338,7 +336,7 @@ angular
                 source: "data",
                 fontColor: "white",
                 //,
-                // min: self.config.ranges.min,
+                min: 0,
                 // suggestedMax: self.config.ranges.max,
                 //  stepSize: self.config.ranges.stepSize,
               },
@@ -489,8 +487,10 @@ angular
       var next_time = 0;
 
       if (type == "hours") {
+        payload.config.usePreviousFile = false;
         next_time = moment().endOf("day").add(offset, type);
       } else {
+        payload.config.usePreviousFile = true;
         next_time = moment().add(offset, type);
       }
       // if(self.config.debug)
