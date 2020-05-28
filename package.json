@@ -1,17 +1,20 @@
 {
-  "name": "mycovid19",
-  "version": "1.0.0",
-  "description": "smart-mirror plugin to display covid19 line charts",
-  "main": "controller.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "sam detweiler",
-  "license": "ISC",
-  "dependencies": {
-    "chart.js": "^2.9.3",
-    "csvtojson": "^2.0.10",
-    "path": "^0.12.7",
-    "prettier": "^2.0.5"
-  }
+	"name": "mycovid19",
+	"version": "1.0.0",
+	"description": "smart-mirror plugin to display covid19 line charts",
+	"main": "controller.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"postinstall": "cp .pre-commit .git/hooks/pre-commit"
+	},
+	"author": "sam detweiler",
+	"license": "ISC",
+	"devDependencies": {
+		"prettier": "^2.0.5"
+	},
+	"dependencies": {
+		"chart.js": "^2.9.3",
+		"csvtojson": "^2.0.10",
+		"path": "^0.12.7"
+	}
 }
