@@ -1,0 +1,24 @@
+{
+	"commands": {
+		"show_chart": {
+			"text": "차트 표시",
+			"voice": "차트 표시",
+			"description": "'차트'초점에 대한 COVid19 차트 표시"
+		}
+	},
+	"mycovid19": {
+		"config": {
+			"title": "차트 목록",
+			"charttitle": "차트",
+			"layout_title": "MyCovid19 차트 구성 기",
+			"layout_chartlist": "차트 목록",
+			"layout_chartname": "차트 이름",
+			"layout_chart_type": "국가, 미국 주 또는 미국 주 카운티별로 선택",
+			"layout_colors_for_item": "소스 항목의 색상",
+			"country_description": "쉼표로 구분 된 국가 이름 목록",
+			"state_description": "쉼표로 구분 된 상태 이름 목록",
+			"county_description": "쉼표로 구분, 대괄호 그룹 목록 [카운티 이름, 주 이름], [카운티 이름, 주 이름] ..",
+			"color_description": "쉼표로 구분 된 색상 이름 또는 값 목록 (예 : 빨강, 파랑, # 07f)"
+		}
+	}
+}

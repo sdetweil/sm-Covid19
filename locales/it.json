@@ -1,0 +1,24 @@
+{
+	"commands": {
+		"show_chart": {
+			"text": "mostra grafico",
+			"voice": "mostra grafico",
+			"description": "mostra i grafici COVid19 nel focus \"grafico\""
+		}
+	},
+	"mycovid19": {
+		"config": {
+			"title": "chartlist",
+			"charttitle": "grafico",
+			"layout_title": "Configuratore di carte MyCovid19",
+			"layout_chartlist": "Elenco grafici",
+			"layout_chartname": "nome del grafico",
+			"layout_chart_type": "Selezionare per Paesi, Stati degli Stati Uniti o contee degli Stati Uniti",
+			"layout_colors_for_item": "colori per l'elemento di origine",
+			"country_description": "elenco separato da virgole di nomi di paesi",
+			"state_description": "elenco separato da virgole di nomi di stati",
+			"county_description": "separato da virgole, elenco raggruppato tra parentesi [nome della contea, nome dello stato], [nome della contea, nome dello stato] ..",
+			"color_description": "elenco separato da virgole di nomi o valori di colore, ad esempio: rosso, blu, # 07f"
+		}
+	}
+}

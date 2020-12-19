@@ -2,9 +2,9 @@
   "schema": {
     "mycovid19": {
       "type": "array",
-      "title": "chartlist",      
+      "title": "chartlist",
       "minItems":3,
-      "maxItems": 3, 
+      "maxItems": 3,
       "items": {
         "type": "object",
         "properties": {
@@ -15,16 +15,19 @@
           },
           "charts": {
             "type": "array",
-            "maxItems": 2,
+            "maxItems": 4,
             "items": {
               "type": "object",
               "title": "chart",
                 "properties": {
                 "countries":{
-                  "type":"string"           
+                  "type":"string"
                 },
                 "states":{
-                  "type":"string"           
+                  "type":"string"
+                },
+                "counties":{
+                  "type":"string"
                 },
                 "colorsforsource":
                 {
@@ -32,11 +35,11 @@
                 },
                 "charttype":{
                   "type":"string",
-                  "enum":["cases", "cumulative cases","deaths","cumulative deaths"]                  
+                  "enum":["cases", "cumulative cases","deaths","cumulative deaths"]
                 },
                 "chartname": {
                   "type": "string",
-                  "required":true   
+                  "required":true
                  },
                  "xAxesLabel":{
                   "type":"string",
@@ -45,7 +48,7 @@
                  "yAxesLabel":{
                   "type":"string",
                   "required":false
-                 },                       
+                 },
                  "chartwidth":{
                   "type":"number",
                   "required":false
@@ -54,7 +57,7 @@
                   "type":"number",
                   "required":false
                  },
-                 "startDate":{                  
+                 "startDate":{
                   "type":"date",
                   "required":false
                  }
@@ -68,19 +71,19 @@
   "form": [
     {
       "title":"MyCovid19 chart configurator",
-      "type":"fieldset",      
+      "type":"fieldset",
       "_comment":"put this content at the bottom of list of config controls",
-      "expandable":true,        
+      "expandable":true,
       "order":100,
       "items": [
-        {         
+        {
       "type": "tabarray",
       "key": "mycovid19",
-      "title": "My Covid19 Chart List",      
+      "title": "My Covid19 Chart List",
       "expandable":true,
       "items": {
         "type": "section",
-        "legend":"{{value}}",          
+        "legend":"{{value}}",
         "items": [
           {
             "key":"mycovid19[].position",
@@ -88,42 +91,50 @@
           },
           {
             "type": "tabarray",
-            "title":"Charts",             
+            "title":"Charts",
             "items": [
                  {
-                    "type":"section",         
-                    "legend":"{{value}}",              
+                    "type":"section",
+                    "legend":"{{value}}",
                     "items":[
                     {
                       "key":"mycovid19[].charts[].chartname",
                       "title":"chart name",
                       "valueInLegend":true
-                    } ,     
+                    } ,
                     {
                       "key":"mycovid19[].charts[].charttype",
                       "title":"chart type"
-                    },                 
+                    },
                       {
                          "type": "selectfieldset",
-                              "title": "Select by Countries or US States",
-                              "expandable":true,
-                              "items": [
-                                {
-                                  "key": "mycovid19[].charts[].countries",    
-                                  "title":"country list",
-                                  "legend": "Countries"
-                                },
-                                {
-                                  "key": "mycovid19[].charts[].states",
-                                  "title":"state list",
-                                  "legend": "States"
-                                }
-                              ]     
+                          "title": "Select by Countries, US States or US State counties",
+                          "expandable":true,
+                          "items": [
+                            {
+                              "key": "mycovid19[].charts[].countries",
+                              "title":"country list",
+                              "legend": "Countries",
+                              "description": "comma separated list of country names"
+                            },
+                            {
+                              "key": "mycovid19[].charts[].states",
+                              "title":"state list",
+                              "legend": "States",
+                              "description": "comma separated list of state names"
+                            },
+                            {
+                              "key": "mycovid19[].charts[].counties",
+                              "title":"county list",
+                              "legend": "Counties",
+                              "description":"bracket separated list [ county name, state name], [ county name, state name] .."
+                            }
+                          ]
                         },
                       {
-                      "title":"colors for source item",              
+                      "title":"colors for source item",
                       "key":"mycovid19[].charts[].colorsforsource"
-                      },            
+                      },
                       {
                       "key":"mycovid19[].charts[].xAxesLabel",
                       "title":"xAxes Label"
@@ -136,16 +147,16 @@
                       "key":"mycovid19[].charts[].chartwidth",
                       "title":"width"
                       },
-                      {                                   
+                      {
                       "key":"mycovid19[].charts[].chartheight",
                       "title":"Height"
                       },
                       {
                       "key":"mycovid19[].charts[].startDate",
                       "title":"Start Date"
-                      }                         
+                      }
                     ]
-                 }                    
+                 }
             ]
           }
         ]

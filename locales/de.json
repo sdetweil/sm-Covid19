@@ -1,0 +1,24 @@
+{
+	"commands": {
+		"show_chart": {
+			"text": "Diagramm anzeigen",
+			"voice": "Diagramm anzeigen",
+			"description": "Zeigen Sie die COVid19-Diagramme im Fokus \"Diagramm\" an"
+		}
+	},
+	"mycovid19": {
+		"config": {
+			"title": "chartlist",
+			"charttitle": "Diagramm",
+			"layout_title": "MyCovid19-Diagrammkonfigurator",
+			"layout_chartlist": "Diagrammliste",
+			"layout_chartname": "Diagrammname",
+			"layout_chart_type": "Wählen Sie nach Ländern, US-Bundesstaaten oder US-Bundesstaaten aus",
+			"layout_colors_for_item": "Farben für Quellartikel",
+			"country_description": "durch Kommas getrennte Liste von Ländernamen",
+			"state_description": "durch Kommas getrennte Liste von Statusnamen",
+			"county_description": "Komma getrennt, Klammer gruppiert Liste [County Name, State Name], [County Name, State Name] ..",
+			"color_description": "durch Kommas getrennte Liste von Farbnamen oder -werten, z. B.: Rot, Blau, # 07f"
+		}
+	}
+}

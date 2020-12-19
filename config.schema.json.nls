@@ -1,0 +1,177 @@
+{
+  "schema": {
+    "mycovid19": {
+      "type": "array",
+      "title": "{{title}}",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "string",
+            "title": "position",
+            "enum": [
+              "left",
+              "center",
+              "right"
+            ]
+          },
+          "charts": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "title": "{{charttitle}}",
+              "properties": {
+                "countries": {
+                  "type": "string"
+                },
+                "states": {
+                  "type": "string"
+                },
+                "counties": {
+                  "type": "string"
+                },
+                "colorsforsource": {
+                  "type": "string"
+                },
+                "charttype": {
+                  "type": "string",
+                  "enum": [
+                    "cases",
+                    "cumulative cases",
+                    "deaths",
+                    "cumulative deaths"
+                  ]
+                },
+                "chartname": {
+                  "type": "string",
+                  "required": true
+                },
+                "xAxesLabel": {
+                  "type": "string",
+                  "required": false
+                },
+                "yAxesLabel": {
+                  "type": "string",
+                  "required": false
+                },
+                "chartwidth": {
+                  "type": "number",
+                  "required": false
+                },
+                "chartheight": {
+                  "type": "number",
+                  "required": false
+                },
+                "startDate": {
+                  "type": "date",
+                  "required": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "form": [
+    {
+      "title": "{{layout_title}}",
+      "type": "fieldset",
+      "_comment": "put this content at the bottom of list of config controls",
+      "expandable": true,
+      "order": 100,
+      "items": [
+        {
+          "type": "tabarray",
+          "key": "mycovid19",
+          "title": "{{layout_chartlist}}",
+          "expandable": true,
+          "items": {
+            "type": "section",
+            "legend": "{{value}}",
+            "items": [
+              {
+                "key": "mycovid19[].position",
+                "valueInLegend": true
+              },
+              {
+                "type": "tabarray",
+                "title": "Charts",
+                "items": [
+                  {
+                    "type": "section",
+                    "legend": "{{value}}",
+                    "items": [
+                      {
+                        "key": "mycovid19[].charts[].chartname",
+                        "title": "{{layout_chartname}}",
+                        "valueInLegend": true
+                      },
+                      {
+                        "key": "mycovid19[].charts[].charttype",
+                        "title": "chart type"
+                      },
+                      {
+                        "type": "selectfieldset",
+                        "title": "{{layout_chart_type}}",
+                        "expandable": true,
+                              "items": [
+                                {
+                                  "key": "mycovid19[].charts[].countries",
+                                  "title":"country list",
+                                  "legend": "Countries",
+                                  "description": "{{country_description}}"
+                                },
+                                {
+                                  "key": "mycovid19[].charts[].states",
+                                  "title":"state list",
+                                  "legend": "States",
+                                  "description": "{{state_description}}"
+                                },
+                                {
+                                  "key": "mycovid19[].charts[].counties",
+                                  "title":"county list",
+                                  "legend": "Counties",
+                                  "description":"{{county_description}}"
+                                }
+                              ]
+                      },
+                      {
+                        "title": "{{layout_colors_for_item}}",
+                        "key": "mycovid19[].charts[].colorsforsource",
+                        "description":"{{color_description}}"
+                      },
+                      {
+                        "key": "mycovid19[].charts[].xAxesLabel",
+                        "title": "xAxes Label"
+                      },
+                      {
+                        "key": "mycovid19[].charts[].yAxesLabel",
+                        "title": "yAxes Label"
+                      },
+                      {
+                        "key": "mycovid19[].charts[].chartwidth",
+                        "title": "width"
+                      },
+                      {
+                        "key": "mycovid19[].charts[].chartheight",
+                        "title": "Height"
+                      },
+                      {
+                        "key": "mycovid19[].charts[].startDate",
+                        "title": "Start Date"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

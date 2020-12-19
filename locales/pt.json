@@ -1,0 +1,24 @@
+{
+	"commands": {
+		"show_chart": {
+			"text": "mostrar gráfico",
+			"voice": "mostrar gráfico",
+			"description": "mostrar os gráficos COVid19 no foco 'gráfico'"
+		}
+	},
+	"mycovid19": {
+		"config": {
+			"title": "lista de gráficos",
+			"charttitle": "gráfico",
+			"layout_title": "Configurador gráfico MyCovid19",
+			"layout_chartlist": "Lista de gráficos",
+			"layout_chartname": "nome do gráfico",
+			"layout_chart_type": "Selecione por países, estados dos EUA ou condados estaduais dos EUA",
+			"layout_colors_for_item": "cores para o item de origem",
+			"country_description": "lista separada por vírgulas de nomes de países",
+			"state_description": "lista separada por vírgulas de nomes de estados",
+			"county_description": "separados por vírgulas, lista agrupada por colchetes [nome do condado, nome do estado], [nome do condado, nome do estado] ..",
+			"color_description": "lista separada por vírgulas de nomes ou valores de cores, por exemplo: vermelho, azul, # 07f"
+		}
+	}
+}

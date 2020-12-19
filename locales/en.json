@@ -1,0 +1,24 @@
+{
+	"commands": {
+		"show_chart": {
+			"text": "show chart",
+			"voice": "show chart",
+			"description": "show the COVid19 charts on 'chart' focus"
+		}
+	},
+	"mycovid19": {
+		"config": {
+			"title": "chartlist",
+			"charttitle": "chart",
+			"layout_title": "MyCovid19 chart configurator",
+			"layout_chartlist": "Chart List",
+			"layout_chartname": "chart name",
+			"layout_chart_type": "Select by Countries, US States, or US State Counties",
+			"layout_colors_for_item": "colors for source item",
+			"country_description": "comma separated list of country names",
+			"state_description": "comma separated list of state names",
+			"county_description": "comma separated, bracket grouped list [ county name, state name], [ county name, state name] ..",
+			"color_description": "comma separated list of color names or values, eg:  red, blue, #07f"
+		}
+	}
+}

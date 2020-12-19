@@ -5,7 +5,7 @@
 	"main": "controller.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"postinstall": "cp .pre-commit .git/hooks/pre-commit"
+		"postinstall": "./postinstall.sh"
 	},
 	"author": "sam detweiler",
 	"license": "ISC",
