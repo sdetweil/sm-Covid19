@@ -7,7 +7,7 @@ if [ $fs -lt 1000 ]; then
 	# if the compiled trans files exist
 	if [ -e ../../app/locales/enc.json ]; then
 	    # erase so they will be reqbuilt
-	  echo	rm ../../app/locales/??c.json
+	  rm ../../app/locales/??c.json
 	fi
 else
 	# nls NOT enabled
