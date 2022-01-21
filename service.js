@@ -5,6 +5,9 @@ const sfn = document.currentScript.src.substring(
 );
 const _chart_debug = true;
 const cvt = require(path.resolve(sfn, "node_modules", "csvtojson"));
+const { exec } = require("child_process");
+const tmp = require(path.resolve(sfn, "node_modules", "tmp"));
+const os = require("os");
 
 angular.module("SmartMirror").factory("_MyChartService", function ($http) {
 	var service = {};
@@ -124,33 +127,86 @@ angular.module("SmartMirror").factory("_MyChartService", function ($http) {
 			: moment("12/31/2019");
 		if (payload.config.type != "countries")
 			start = start.subtract(2, "days");
-		cvt()
-			.fromFile(payload.filename) // input xls
-			.subscribe((jsonObj, index) => {
-				try {
-					if (fieldtest[payload.config.type](jsonObj, payload)) {
-						// if this location is within the date range
-						let zz = moment(
-							jsonObj[payload.fields.date_fieldname],
-							date_mask[payload.config.type]
-						);
-						if (zz.isAfter(start)) {
-							payload.location[
-								jsonObj[payload.fields.location_fieldname]
-							].push(jsonObj);
-						}
-					}
-				} catch (error) {
-					console.log(error);
-				}
-			})
-			.then((result) => {
-				// all done, tell the topmost function we completed
-				payload.resolve.shift()({
-					data: payload.location,
-					payload: payload,
-				});
+		var tmpObj = {};
+		// if we dont have a temp file yet
+		if (!payload.tmpfile) {
+			// get the name
+			tmpObj = tmp.fileSync({
+				mode: 0666,
+				discardDescriptor: true,
+				prefix: payload.config.type,
+				postfix: ".csv",
 			});
+			// save it
+			payload.tmpfile = tmpObj.name;
+		}
+		let tpath = sfn + "/";
+		if (os.platform() == "win32") {
+			ext = ".cmd";
+			tpath = tpath.replace(new RegExp("/", "g"), "\\");
+		} else ext = ".sh";
+		let tfn = payload.filename.split("/").slice(-1);
+		let temp = "";
+		switch (payload.config.type) {
+			case "counties":
+				temp = JSON.stringify(payload[payload.config.type]).slice(
+					1,
+					-1
+				);
+				break;
+			default:
+				temp = payload[payload.config.type].join(",");
+		}
+		// create a filtered csv , reduce 88meg to <100k prevent stack crash
+		let cmd_string =
+			tpath +
+			"filtercsv" +
+			ext +
+			" " +
+			payload.config.type +
+			" " +
+			tpath +
+			tfn +
+			" " +
+			payload.tmpfile +
+			" " +
+			temp;
+		if (payload.config.debug) {
+			console.log("filtering via " + cmd_string);
+		}
+		exec(cmd_string, { windowsHide: true }, (error, stdout, stderr) => {
+			if (error) {
+				console.error(`exec error: ${error}`);
+				return;
+			}
+			cvt()
+				.fromFile(payload.tmpfile) // input xls
+				.subscribe((jsonObj, index) => {
+					try {
+						if (fieldtest[payload.config.type](jsonObj, payload)) {
+							// if this location is within the date range
+							let zz = moment(
+								jsonObj[payload.fields.date_fieldname],
+								date_mask[payload.config.type]
+							);
+							if (zz.isAfter(start)) {
+								payload.location[
+									jsonObj[payload.fields.location_fieldname]
+								].push(jsonObj);
+							}
+						}
+					} catch (error) {
+						console.log(error);
+					}
+				})
+				.then((result) => {
+					// all done, tell the topmost function we completed
+					payload.resolve.shift()({
+						data: payload.location,
+						payload: payload,
+					});
+				});
+		});
 	}
 
 	function getInitialData(payload) {
